@@ -26,13 +26,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import os, sys
+import os, sys, argparse
 
 from common import Common, SHARE
 from settings import Settings
 from launcher import Launcher
 
 def main():
+    # parse arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--settings', action='store_true', dest='settings', help='Open Tor Browser Launcher settings')
+    parser.add_argument('url', nargs='*', help='URL to load')
+    args = parser.parse_args()
+
+    settings = bool(args.settings)
+    url_list = args.url
+
+    # load the version and print the banner
     with open(os.path.join(SHARE, 'version')) as buf:
         tor_browser_launcher_version = buf.read().strip()
 
@@ -50,13 +60,13 @@ def main():
         common.bring_window_to_front(tbl_pid)
         sys.exit()
 
-    if '-settings' in sys.argv:
+    if settings:
         # settings mode
         app = Settings(common)
 
     else:
         # launcher mode
-        app = Launcher(common)
+        app = Launcher(common, url_list)
 
 if __name__ == "__main__":
     main()

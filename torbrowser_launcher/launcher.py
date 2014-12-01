@@ -63,9 +63,10 @@ class VerifyTorProjectCert(ClientContextFactory):
         return cert.digest('sha256') == self.torproject_ca.digest('sha256')
 
 class Launcher:
-    def __init__(self, common):
+    def __init__(self, common, url_list):
         print _('Starting launcher dialog')
         self.common = common
+        self.url_list = url_list
 
         # init launcher
         self.set_gui(None, '', [])
@@ -497,9 +498,6 @@ class Launcher:
             versions = json.load(open(self.common.paths['update_check_file']))
             latest = None
 
-            # TODO: after TBB 4.0 is released, refactor this section
-            #       to not filter linux versions (#132)
-
             # filter linux versions
             valid = []
             for version in versions:
@@ -629,8 +627,17 @@ class Launcher:
             t = threading.Thread(target=play_modem_sound)
             t.start()
 
+        # hide the TBL window (#151)
+        if hasattr(self, 'window'):
+            self.window.hide()
+            while gtk.events_pending():
+                gtk.main_iteration_do(True)
+
         # run Tor Browser
-        subprocess.call([self.common.paths['tbb']['start']])
+        if len(self.url_list) == 0:
+            subprocess.call([self.common.paths['tbb']['start']])
+        else:
+            subprocess.call([self.common.paths['tbb']['start'], '-allow-remote'] + self.url_list)
 
         if run_next_task:
             self.run_task()
