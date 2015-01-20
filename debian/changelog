@@ -1,8 +1,9 @@
-torbrowser-launcher (0.1.7-1) experimental; urgency=medium
+torbrowser-launcher (0.1.7-1) unstable; urgency=medium
 
+  [ Ulrike Uhlig ]
   * New upstream version.
 
- -- Ulrike Uhlig <u@451f.org>  Mon, 01 Dec 2014 21:38:01 +0100
+ -- Holger Levsen <holger@debian.org>  Wed, 03 Dec 2014 23:46:10 +0100
 
 torbrowser-launcher (0.1.6-1) unstable; urgency=medium
 
