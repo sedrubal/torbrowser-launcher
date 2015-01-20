@@ -1,3 +1,9 @@
+torbrowser-launcher (0.1.8-1) unstable; urgency=medium
+
+  * New upstream version. (Closes: #775871)
+
+ -- Ulrike Uhlig <u@451f.org>  Tue, 20 Jan 2015 23:30:27 +0100
+
 torbrowser-launcher (0.1.7-1) unstable; urgency=medium
 
   [ Ulrike Uhlig ]
