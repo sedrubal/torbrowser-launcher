@@ -1,3 +1,10 @@
+torbrowser-launcher (0.1.9-1) unstable; urgency=medium
+
+  * New upstream version, which adds an option to disable accepting links, to
+    workaround an issue affecting users running both Firefox and Tor Browser.
+
+ -- Holger Levsen <holger@debian.org>  Wed, 04 Feb 2015 22:55:39 +0100
+
 torbrowser-launcher (0.1.8-1) unstable; urgency=medium
 
   * New upstream version:
