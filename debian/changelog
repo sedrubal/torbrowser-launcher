@@ -1,3 +1,9 @@
+torbrowser-launcher (0.2.0-1) unstable; urgency=medium
+ 
+  * New upstream version. (Closes: #784041)
+
+ -- Ulrike Uhlig <u@451f.org>  Thu, 14 May 2015 22:18:10 +0200
+
 torbrowser-launcher (0.1.9-1) unstable; urgency=medium
 
   * New upstream version, which adds an option to disable accepting links, to
