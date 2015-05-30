@@ -1,3 +1,14 @@
+torbrowser-launcher (0.1.9-1+deb8u1) jessie; urgency=high
+
+  * Apply 3d9f4ed and 5f833d7 from 0.2.0 upstream release to deal with changed
+    pathes in the 4.5 torbrowser release. (Closes: #784041)
+  * 3d9f4ed also removes the accept links feature (as it has stopped worked
+    with 4.5.)
+  * Apply f219f35 from 0.2.0 to stop acting as default browser, because a
+    default browser should be captable of accepting links.
+
+ -- Holger Levsen <holger@debian.org>  Sat, 30 May 2015 15:27:02 +0200
+
 torbrowser-launcher (0.1.9-1) unstable; urgency=medium
 
   * New upstream version, which adds an option to disable accepting links, to
