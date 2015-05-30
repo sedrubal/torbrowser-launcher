@@ -1,0 +1,41 @@
+From 5f833d73290bd3623bf22caffaed599381d454d9 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Mon, 11 May 2015 19:20:30 -0400
+Subject: [PATCH] execute ./start-tor-browser.desktop instead of
+ ./Browser/start-tor-browser (#176)
+
+---
+ torbrowser_launcher/common.py   | 3 ++-
+ torbrowser_launcher/launcher.py | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/torbrowser_launcher/common.py b/torbrowser_launcher/common.py
+index 93ed067..e5844b9 100644
+--- a/torbrowser_launcher/common.py
++++ b/torbrowser_launcher/common.py
+@@ -144,7 +144,8 @@ class Common:
+                 'update_check_file': tbb_cache+'/download/RecommendedTBBVersions',
+                 'tbb': {
+                     'dir': tbb_local+'/tbb/'+self.architecture,
+-                    'start': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/start-tor-browser',
++                    'dir_tbb': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language,
++                    'start': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/start-tor-browser.desktop',
+                     'versions': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/TorBrowser/Docs/sources/versions',
+                 },
+             }
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index d4211df..698949d 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -631,7 +631,7 @@ class Launcher:
+                 gtk.main_iteration_do(True)
+ 
+         # run Tor Browser
+-        subprocess.call([self.common.paths['tbb']['start'], '--detach'])
++        subprocess.call([self.common.paths['tbb']['start']], cwd=self.common.paths['tbb']['dir_tbb'])
+ 
+         if run_next_task:
+             self.run_task()
+-- 
+1.9.1
+

@@ -1,0 +1,93 @@
+From 3d9f4edc206ade74ff1b4194297e20025e51b793 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Mon, 11 May 2015 14:04:01 -0700
+Subject: [PATCH] Update location of start-tor-browser for TBB 4.5, and remove
+ accept_links feature #176
+
+---
+ torbrowser_launcher/common.py   |  5 ++---
+ torbrowser_launcher/launcher.py |  6 +-----
+ torbrowser_launcher/settings.py | 12 ------------
+ 3 files changed, 3 insertions(+), 20 deletions(-)
+
+diff --git a/torbrowser_launcher/common.py b/torbrowser_launcher/common.py
+index 505a4b3..9495fe6 100644
+--- a/torbrowser_launcher/common.py
++++ b/torbrowser_launcher/common.py
+@@ -145,7 +145,7 @@ class Common:
+                 'update_check_file': tbb_cache+'/download/RecommendedTBBVersions',
+                 'tbb': {
+                     'dir': tbb_local+'/tbb/'+self.architecture,
+-                    'start': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/start-tor-browser',
++                    'start': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/start-tor-browser',
+                     'versions': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/TorBrowser/Docs/sources/versions',
+                 },
+             }
+@@ -198,8 +198,7 @@ class Common:
+             'check_for_updates': False,
+             'modem_sound': False,
+             'last_update_check_timestamp': 0,
+-            'mirror': self.default_mirror,
+-            'accept_links': False
++            'mirror': self.default_mirror
+         }
+ 
+         if os.path.isfile(self.paths['settings_file']):
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index 00bc5a4..e9397e0 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -634,10 +634,7 @@ class Launcher:
+                 gtk.main_iteration_do(True)
+ 
+         # run Tor Browser
+-        if self.common.settings['accept_links']:
+-            subprocess.call([self.common.paths['tbb']['start'], '-allow-remote'] + self.url_list)
+-        else:
+-            subprocess.call([self.common.paths['tbb']['start']])
++        subprocess.call([self.common.paths['tbb']['start'], '--detach'])
+ 
+         if run_next_task:
+             self.run_task()
+@@ -674,4 +671,3 @@ class Launcher:
+             delattr(self, 'current_download_url')
+         if reactor.running:
+             reactor.stop()
+-
+diff --git a/torbrowser_launcher/settings.py b/torbrowser_launcher/settings.py
+index a29c41a..00e521d 100644
+--- a/torbrowser_launcher/settings.py
++++ b/torbrowser_launcher/settings.py
+@@ -95,15 +95,6 @@ class Settings:
+             self.update_checkbox.set_active(False)
+         self.update_checkbox.show()
+ 
+-        # accept links
+-        self.accept_links = gtk.CheckButton(_("Allow opening links with Tor Browser\n(this doesn't work if you use Firefox)"))
+-        self.settings_box.pack_start(self.accept_links, True, True, 0)
+-        if self.common.settings['accept_links']:
+-            self.accept_links.set_active(True)
+-        else:
+-            self.accept_links.set_active(False)
+-        self.accept_links.show()
+-
+         # modem sound
+         self.modem_checkbox = gtk.CheckButton(_("Play modem sound, because Tor is slow :]"))
+         self.settings_box.pack_start(self.modem_checkbox, True, True, 0)
+@@ -222,7 +213,6 @@ class Settings:
+         # checkbox options
+         self.common.settings['update_over_tor'] = self.tor_update_checkbox.get_active()
+         self.common.settings['check_for_updates'] = self.update_checkbox.get_active()
+-        self.common.settings['accept_links'] = self.accept_links.get_active()
+         self.common.settings['modem_sound'] = self.modem_checkbox.get_active()
+ 
+         # figure out the selected mirror
+@@ -237,5 +227,3 @@ class Settings:
+ 
+     def destroy(self, widget, data=None):
+         gtk.main_quit()
+-
+-
+-- 
+1.9.1
+
