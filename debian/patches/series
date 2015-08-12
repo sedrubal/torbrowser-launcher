@@ -2,3 +2,4 @@
 0002-execute-.-start-tor-browser.desktop-instead-of-.-Bro.patch
 0003-Stop-letting-Tor-Browser-act-as-a-default-browser.patch
 0004-Stop-confining-start-tor-browser-script-with-AppArmo.patch
+0005-Set-torbrowser.start-tor-browser-and-usr.bin.torbrow.patch
