@@ -3,6 +3,9 @@ torbrowser-launcher (0.2.1-2) UNRELEASED; urgency=medium
   [ intrigeri ]
   * Re-apply changes from 0.2.0-2, that were dropped by the 0.2.1-1 upload.
   * Add debian/gbp.conf to automated selection of the packaging branch.
+  * Drop AppArmor-allow-Tor-Browser-to-use-shared-libraries-s.patch:
+    applied upstream.
+  * Refresh patches.
 
   [ Ximin Luo ]
   * hand over package to pkg-privacy team
