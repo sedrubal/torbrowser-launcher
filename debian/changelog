@@ -1,4 +1,4 @@
-torbrowser-launcher (0.2.1-2) UNRELEASED; urgency=medium
+torbrowser-launcher (0.2.1-2) unstable; urgency=high
 
   [ intrigeri ]
   * Re-apply changes from 0.2.0-2, that were dropped by the 0.2.1-1 upload.
@@ -8,9 +8,9 @@ torbrowser-launcher (0.2.1-2) UNRELEASED; urgency=medium
   * Refresh patches.
 
   [ Ximin Luo ]
-  * hand over package to pkg-privacy team
+  * Hand over package to pkg-privacy team.
 
- -- intrigeri <intrigeri@debian.org>  Sat, 14 Nov 2015 12:44:59 +0000
+ -- Holger Levsen <holger@debian.org>  Mon, 16 Nov 2015 23:13:29 +0100
 
 torbrowser-launcher (0.2.1-1) unstable; urgency=medium
 
