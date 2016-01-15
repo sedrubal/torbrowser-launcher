@@ -2,6 +2,7 @@ torbrowser-launcher (0.1.9-1+deb8u2) UNRELEASED; urgency=medium
 
   * Add debian/patches/series file so that the patches from 0.1.9-1+deb8u1 are
     actually applied.
+  * Refresh those patches so they apply cleanly.
 
  -- Holger Levsen <holger@debian.org>  Fri, 15 Jan 2016 20:46:52 +0100
 

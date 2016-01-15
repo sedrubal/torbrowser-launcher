@@ -7,15 +7,12 @@ Subject: [PATCH] Stop letting Tor Browser act as a default browser
  share/applications/torbrowser.desktop | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/share/applications/torbrowser.desktop b/share/applications/torbrowser.desktop
-index 4e10d3f..2a16c38 100644
---- a/share/applications/torbrowser.desktop
-+++ b/share/applications/torbrowser.desktop
-@@ -6,4 +6,3 @@ Terminal=false
+Index: b/share/applications/torbrowser.desktop
+===================================================================
+--- a/share/applications/torbrowser.desktop	2016-01-15 20:53:02.350748143 +0100
++++ b/share/applications/torbrowser.desktop	2016-01-15 20:53:05.162748239 +0100
+@@ -6,4 +6,3 @@
  Type=Application
  Icon=/usr/share/pixmaps/torbrowser80.xpm
  Categories=Network;WebBrowser;
 -MimeType=x-scheme-handler/http;x-scheme-handler/https;
--- 
-1.9.1
-

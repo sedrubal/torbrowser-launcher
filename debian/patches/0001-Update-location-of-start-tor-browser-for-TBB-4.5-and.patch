@@ -10,11 +10,11 @@ Subject: [PATCH] Update location of start-tor-browser for TBB 4.5, and remove
  torbrowser_launcher/settings.py | 12 ------------
  3 files changed, 3 insertions(+), 20 deletions(-)
 
-diff --git a/torbrowser_launcher/common.py b/torbrowser_launcher/common.py
-index 505a4b3..9495fe6 100644
---- a/torbrowser_launcher/common.py
-+++ b/torbrowser_launcher/common.py
-@@ -145,7 +145,7 @@ class Common:
+Index: b/torbrowser_launcher/common.py
+===================================================================
+--- a/torbrowser_launcher/common.py	2016-01-15 20:53:02.630748152 +0100
++++ b/torbrowser_launcher/common.py	2016-01-15 20:53:04.682748223 +0100
+@@ -145,7 +145,7 @@
                  'update_check_file': tbb_cache+'/download/RecommendedTBBVersions',
                  'tbb': {
                      'dir': tbb_local+'/tbb/'+self.architecture,
@@ -23,7 +23,7 @@ index 505a4b3..9495fe6 100644
                      'versions': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/TorBrowser/Docs/sources/versions',
                  },
              }
-@@ -198,8 +198,7 @@ class Common:
+@@ -198,8 +198,7 @@
              'check_for_updates': False,
              'modem_sound': False,
              'last_update_check_timestamp': 0,
@@ -33,11 +33,11 @@ index 505a4b3..9495fe6 100644
          }
  
          if os.path.isfile(self.paths['settings_file']):
-diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
-index 00bc5a4..e9397e0 100644
---- a/torbrowser_launcher/launcher.py
-+++ b/torbrowser_launcher/launcher.py
-@@ -634,10 +634,7 @@ class Launcher:
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-15 20:53:02.630748152 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-15 20:53:04.682748223 +0100
+@@ -634,10 +634,7 @@
                  gtk.main_iteration_do(True)
  
          # run Tor Browser
@@ -49,16 +49,16 @@ index 00bc5a4..e9397e0 100644
  
          if run_next_task:
              self.run_task()
-@@ -674,4 +671,3 @@ class Launcher:
+@@ -674,4 +671,3 @@
              delattr(self, 'current_download_url')
          if reactor.running:
              reactor.stop()
 -
-diff --git a/torbrowser_launcher/settings.py b/torbrowser_launcher/settings.py
-index a29c41a..00e521d 100644
---- a/torbrowser_launcher/settings.py
-+++ b/torbrowser_launcher/settings.py
-@@ -95,15 +95,6 @@ class Settings:
+Index: b/torbrowser_launcher/settings.py
+===================================================================
+--- a/torbrowser_launcher/settings.py	2016-01-15 20:53:02.630748152 +0100
++++ b/torbrowser_launcher/settings.py	2016-01-15 20:53:04.682748223 +0100
+@@ -95,15 +95,6 @@
              self.update_checkbox.set_active(False)
          self.update_checkbox.show()
  
@@ -74,7 +74,7 @@ index a29c41a..00e521d 100644
          # modem sound
          self.modem_checkbox = gtk.CheckButton(_("Play modem sound, because Tor is slow :]"))
          self.settings_box.pack_start(self.modem_checkbox, True, True, 0)
-@@ -222,7 +213,6 @@ class Settings:
+@@ -222,7 +213,6 @@
          # checkbox options
          self.common.settings['update_over_tor'] = self.tor_update_checkbox.get_active()
          self.common.settings['check_for_updates'] = self.update_checkbox.get_active()
@@ -82,12 +82,9 @@ index a29c41a..00e521d 100644
          self.common.settings['modem_sound'] = self.modem_checkbox.get_active()
  
          # figure out the selected mirror
-@@ -237,5 +227,3 @@ class Settings:
+@@ -237,5 +227,3 @@
  
      def destroy(self, widget, data=None):
          gtk.main_quit()
 -
 -
--- 
-1.9.1
-

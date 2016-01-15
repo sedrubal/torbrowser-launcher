@@ -9,11 +9,11 @@ Subject: [PATCH] execute ./start-tor-browser.desktop instead of
  torbrowser_launcher/launcher.py | 2 +-
  2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/torbrowser_launcher/common.py b/torbrowser_launcher/common.py
-index 93ed067..e5844b9 100644
---- a/torbrowser_launcher/common.py
-+++ b/torbrowser_launcher/common.py
-@@ -144,7 +144,8 @@ class Common:
+Index: b/torbrowser_launcher/common.py
+===================================================================
+--- a/torbrowser_launcher/common.py	2016-01-15 20:53:04.682748223 +0100
++++ b/torbrowser_launcher/common.py	2016-01-15 20:53:04.934748231 +0100
+@@ -145,7 +145,8 @@
                  'update_check_file': tbb_cache+'/download/RecommendedTBBVersions',
                  'tbb': {
                      'dir': tbb_local+'/tbb/'+self.architecture,
@@ -23,11 +23,11 @@ index 93ed067..e5844b9 100644
                      'versions': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language+'/Browser/TorBrowser/Docs/sources/versions',
                  },
              }
-diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
-index d4211df..698949d 100644
---- a/torbrowser_launcher/launcher.py
-+++ b/torbrowser_launcher/launcher.py
-@@ -631,7 +631,7 @@ class Launcher:
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-15 20:53:04.682748223 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-15 20:53:04.934748231 +0100
+@@ -634,7 +634,7 @@
                  gtk.main_iteration_do(True)
  
          # run Tor Browser
@@ -36,6 +36,3 @@ index d4211df..698949d 100644
  
          if run_next_task:
              self.run_task()
--- 
-1.9.1
-
