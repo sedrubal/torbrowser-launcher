@@ -1,0 +1,91 @@
+From e07beac325b7bd716b7a053dcd5664c113e67458 Mon Sep 17 00:00:00 2001
+From: Nicolas Vigier <boklm@mars-attacks.org>
+Date: Thu, 5 Nov 2015 23:41:03 +0100
+Subject: [PATCH] Get stable version using torbrowser updater xml
+
+The RecommendedTBBVersions file contains current versions of Tor Browser
+from all channels, including alpha or beta.
+
+Instead of this, we can use xml file used by Tor Browser's updater in
+the "release" channel:
+https://dist.torproject.org/torbrowser/update_2/release/Linux_x86_64-gcc3/x/en-US
+---
+ torbrowser_launcher/common.py   |  4 ++--
+ torbrowser_launcher/launcher.py | 37 ++++++++++---------------------------
+ 2 files changed, 12 insertions(+), 29 deletions(-)
+
+Index: b/torbrowser_launcher/common.py
+===================================================================
+--- a/torbrowser_launcher/common.py	2016-01-16 10:47:07.917669807 +0100
++++ b/torbrowser_launcher/common.py	2016-01-16 10:47:09.001669844 +0100
+@@ -141,8 +141,8 @@
+                 'download_dir': tbb_cache+'/download',
+                 'gnupg_homedir': tbb_local+'/gnupg_homedir',
+                 'settings_file': tbb_config+'/settings',
+-                'update_check_url': 'https://www.torproject.org/projects/torbrowser/RecommendedTBBVersions',
+-                'update_check_file': tbb_cache+'/download/RecommendedTBBVersions',
++                'update_check_url': 'https://dist.torproject.org/torbrowser/update_2/release/Linux_x86_64-gcc3/x/en-US',
++                'update_check_file': tbb_cache+'/download/release.xml',
+                 'tbb': {
+                     'dir': tbb_local+'/tbb/'+self.architecture,
+                     'dir_tbb': tbb_local+'/tbb/'+self.architecture+'/tor-browser_'+self.language,
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-16 10:47:07.917669807 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-16 10:47:09.001669844 +0100
+@@ -34,6 +34,8 @@
+ from twisted.internet.ssl import ClientContextFactory
+ from twisted.internet.error import DNSLookupError
+ 
++import xml.etree.ElementTree as ET
++
+ import OpenSSL
+ 
+ import pygtk
+@@ -492,38 +494,19 @@
+         subprocess.Popen([self.common.paths['tbl_bin']])
+         self.destroy(False)
+ 
++    def get_stable_version(self):
++        tree = ET.parse(self.common.paths['update_check_file'])
++        for up in tree.getroot():
++            if up.tag == 'update' and up.attrib['appVersion']:
++                return up.attrib['appVersion']
++        return None
++
+     def attempt_update(self):
+         # load the update check file
+         try:
+-            versions = json.load(open(self.common.paths['update_check_file']))
+-            latest = None
+-
+-            # filter linux versions
+-            valid = []
+-            for version in versions:
+-                if '-Linux' in version:
+-                    valid.append(str(version))
+-            valid.sort()
+-            if len(valid):
+-                versions = valid
+-
+-            if len(versions) == 1:
+-                latest = versions.pop()
+-            else:
+-                stable = []
+-                # remove alphas/betas
+-                for version in versions:
+-                    if not re.search(r'a\d-Linux', version) and not re.search(r'b\d-Linux', version):
+-                        stable.append(version)
+-                if len(stable):
+-                    latest = stable.pop()
+-                else:
+-                    latest = versions.pop()
+-
++            latest = self.get_stable_version()
+             if latest:
+                 latest = str(latest)
+-                if latest.endswith('-Linux'):
+-                    latest = latest.rstrip('-Linux')
+ 
+                 self.common.settings['latest_version'] = latest
+                 self.common.settings['last_update_check_timestamp'] = int(time.time())
