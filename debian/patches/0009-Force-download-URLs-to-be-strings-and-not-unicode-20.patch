@@ -7,11 +7,11 @@ Subject: [PATCH] Force download URLs to be strings and not unicode (#205)
  torbrowser_launcher/launcher.py | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
-index d057410..671bee7 100644
---- a/torbrowser_launcher/launcher.py
-+++ b/torbrowser_launcher/launcher.py
-@@ -26,7 +26,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-16 13:17:32.585978768 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-16 13:17:32.781978774 +0100
+@@ -26,7 +26,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  """
  
@@ -20,7 +20,7 @@ index d057410..671bee7 100644
  from twisted.internet import reactor
  from twisted.web.client import Agent, RedirectAgent, ResponseDone, ResponseFailed
  from twisted.web.http_headers import Headers
-@@ -446,8 +446,10 @@ class Launcher:
+@@ -435,8 +435,10 @@
          self.current_download_path = path
          self.current_download_url = url
  
@@ -32,6 +32,3 @@ index d057410..671bee7 100644
          self.progressbar.set_fraction(0)
          self.progressbar.set_text(_('Downloading {0}').format(name))
          self.progressbar.show()
--- 
-1.9.1
-

@@ -8,11 +8,11 @@ Subject: [PATCH] Eek, removed testing code that never should have been
  torbrowser_launcher/launcher.py | 6 ------
  1 file changed, 6 deletions(-)
 
-diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
-index fb6d44f..d057410 100644
---- a/torbrowser_launcher/launcher.py
-+++ b/torbrowser_launcher/launcher.py
-@@ -161,12 +161,6 @@ class Launcher:
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-16 13:12:09.669967713 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-16 13:12:09.889967720 +0100
+@@ -148,12 +148,6 @@
  
          start = self.common.paths['tbb']['start']
          if os.path.isfile(start) and os.access(start, os.X_OK):
@@ -25,6 +25,3 @@ index fb6d44f..d057410 100644
              if installed_version == latest_version:
                  print _('Latest version of TBB is installed, launching')
                  # current version of tbb is installed, launch it
--- 
-1.9.1
-

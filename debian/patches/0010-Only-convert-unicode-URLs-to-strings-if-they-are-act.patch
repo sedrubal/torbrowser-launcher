@@ -8,11 +8,11 @@ Subject: [PATCH] Only convert unicode URLs to strings if they are actually
  torbrowser_launcher/launcher.py | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
-index 671bee7..ff4adcd 100644
---- a/torbrowser_launcher/launcher.py
-+++ b/torbrowser_launcher/launcher.py
-@@ -447,7 +447,10 @@ class Launcher:
+Index: b/torbrowser_launcher/launcher.py
+===================================================================
+--- a/torbrowser_launcher/launcher.py	2016-01-16 13:17:32.781978774 +0100
++++ b/torbrowser_launcher/launcher.py	2016-01-16 13:17:32.985978781 +0100
+@@ -436,7 +436,10 @@
          self.current_download_url = url
  
          mirror_url = url.format(self.common.settings['mirror'])
@@ -24,6 +24,3 @@ index 671bee7..ff4adcd 100644
  
          # initialize the progress bar
          self.progressbar.set_fraction(0)
--- 
-1.9.1
-
