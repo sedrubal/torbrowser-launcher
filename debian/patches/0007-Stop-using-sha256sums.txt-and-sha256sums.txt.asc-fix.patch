@@ -1,0 +1,108 @@
+From 29838399e416968413e3d36cab7668c666caf921 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Thu, 5 Nov 2015 19:39:16 -0800
+Subject: [PATCH] Stop using sha256sums.txt and sha256sums.txt.asc (fixes #180)
+
+Conflicts resolved:
+	torbrowser_launcher/launcher.py
+---
+ torbrowser_launcher/common.py   |  7 +++----
+ torbrowser_launcher/launcher.py | 33 +++++++++++++++------------------
+ 2 files changed, 18 insertions(+), 22 deletions(-)
+
+diff --git a/torbrowser_launcher/common.py b/torbrowser_launcher/common.py
+index d79b32a..86243b0 100644
+--- a/torbrowser_launcher/common.py
++++ b/torbrowser_launcher/common.py
+@@ -119,10 +119,9 @@ class Common:
+             self.paths['tarball_filename'] = tarball_filename
+ 
+             # sig
+-            self.paths['sha256_file'] = tbb_cache+'/download/sha256sums.txt'
+-            self.paths['sha256_sig_file'] = tbb_cache+'/download/sha256sums.txt.asc'
+-            self.paths['sha256_url'] = '{0}torbrowser/'+tbb_version+'/sha256sums.txt'
+-            self.paths['sha256_sig_url'] = '{0}torbrowser/'+tbb_version+'/sha256sums.txt.asc'
++            self.paths['sig_url'] = '{0}torbrowser/'+tbb_version+'/'+tarball_filename+'.asc'
++            self.paths['sig_file'] = tbb_cache+'/download/'+tarball_filename+'.asc'
++            self.paths['sig_filename'] = tarball_filename+'.asc'
+         else:
+             self.paths = {
+                 'dirs': {
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index 4ff6bbe..afababf 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -148,6 +148,12 @@ class Launcher:
+ 
+         start = self.common.paths['tbb']['start']
+         if os.path.isfile(start) and os.access(start, os.X_OK):
++            self.set_gui('task', _("testing verify"),
++                         ['verify',
++                          'extract',
++                          'run'])
++            return
++
+             if installed_version == latest_version:
+                 print _('Latest version of TBB is installed, launching')
+                 # current version of tbb is installed, launch it
+@@ -157,8 +163,7 @@ class Launcher:
+                 print _('TBB is out of date, attempting to upgrade to {0}'.format(latest_version))
+                 # there is a tbb upgrade available
+                 self.set_gui('task', _("Your Tor Browser is out of date. Upgrading from {0} to {1}.".format(installed_version, latest_version)),
+-                             ['download_sha256',
+-                              'download_sha256_sig',
++                             ['download_sig',
+                               'download_tarball',
+                               'verify',
+                               'extract',
+@@ -171,8 +176,7 @@ class Launcher:
+         else:
+             print _('TBB is not installed, attempting to install {0}'.format(latest_version))
+             self.set_gui('task', _("Downloading and installing Tor Browser for the first time."),
+-                         ['download_sha256',
+-                          'download_sha256_sig',
++                         ['download_sig',
+                           'download_tarball',
+                           'verify',
+                           'extract',
+@@ -317,13 +321,9 @@ class Launcher:
+             print _('Checking to see if update is needed')
+             self.attempt_update()
+ 
+-        elif task == 'download_sha256':
+-            print _('Downloading'), self.common.paths['sha256_url'].format(self.common.settings['mirror'])
+-            self.download('signature', self.common.paths['sha256_url'], self.common.paths['sha256_file'])
+-
+-        elif task == 'download_sha256_sig':
+-            print _('Downloading'), self.common.paths['sha256_sig_url'].format(self.common.settings['mirror'])
+-            self.download('signature', self.common.paths['sha256_sig_url'], self.common.paths['sha256_sig_file'])
++        elif task == 'download_sig':
++            print _('Downloading'), self.common.paths['sig_url'].format(self.common.settings['mirror'])
++            self.download('signature', self.common.paths['sig_url'], self.common.paths['sig_file'])
+ 
+         elif task == 'download_tarball':
+             print _('Downloading'), self.common.paths['tarball_url'].format(self.common.settings['mirror'])
+@@ -533,16 +533,13 @@ class Launcher:
+         self.progressbar.set_text(_('Verifying Signature'))
+         self.progressbar.show()
+ 
++        # verify the PGP signature
+         verified = False
+-        # check the sha256 file's sig, and also take the sha256 of the tarball and compare
+-        p = subprocess.Popen(['/usr/bin/gpg', '--homedir', self.common.paths['gnupg_homedir'], '--verify', self.common.paths['sha256_sig_file']])
++        FNULL = open(os.devnull, 'w')
++        p = subprocess.Popen(['/usr/bin/gpg', '--homedir', self.common.paths['gnupg_homedir'], '--verify', self.common.paths['sig_file']], stdout=FNULL, stderr=subprocess.STDOUT)
+         self.pulse_until_process_exits(p)
+         if p.returncode == 0:
+-            # compare with sha256 of the tarball
+-            tarball_sha256 = hashlib.sha256(open(self.common.paths['tarball_file'], 'r').read()).hexdigest()
+-            for line in open(self.common.paths['sha256_file'], 'r').readlines():
+-                if tarball_sha256.lower() in line.lower() and self.common.paths['tarball_filename'] in line:
+-                    verified = True
++            verified = True
+ 
+         if verified:
+             self.run_task()
+-- 
+1.9.1
+

@@ -16,6 +16,7 @@ torbrowser-launcher (0.1.9-1+deb8u2) UNRELEASED; urgency=medium
       make it work again (based on 70c750e).
     - e07beac Get stable version using torbrowser updater xml.
       (Closes: #804184)
+    - ab141ee Stop using sha256sums.txt and sha256sums.txt.asc (fixes #180)
 
  -- Holger Levsen <holger@debian.org>  Fri, 15 Jan 2016 20:46:52 +0100
 

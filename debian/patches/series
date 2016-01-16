@@ -4,3 +4,4 @@
 0004-Stop-confining-start-tor-browser-script-with-AppArmo.patch
 0005-Set-torbrowser.start-tor-browser-and-usr.bin.torbrow.patch
 0006-Get-stable-version-using-torbrowser-updater-xml.patch
+0007-Stop-using-sha256sums.txt-and-sha256sums.txt.asc-fix.patch
