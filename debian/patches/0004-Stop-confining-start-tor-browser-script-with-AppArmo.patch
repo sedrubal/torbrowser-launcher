@@ -1,0 +1,129 @@
+From 39901c6ddc05bb96f2d14cebefec515c2009a222 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Tue, 19 May 2015 13:05:00 -0700
+Subject: [PATCH] Stop confining start-tor-browser script with AppArmor, and
+ fix profiles to work with TBB 4.5+ (#181)
+
+---
+ apparmor/torbrowser.Browser.firefox   | 17 +++++------
+ apparmor/torbrowser.start-tor-browser | 53 -----------------------------------
+ apparmor/usr.bin.torbrowser-launcher  |  2 +-
+ setup.py                              |  1 -
+ 4 files changed, 10 insertions(+), 63 deletions(-)
+ delete mode 100644 apparmor/torbrowser.start-tor-browser
+
+diff --git a/apparmor/torbrowser.Browser.firefox b/apparmor/torbrowser.Browser.firefox
+index 7e68a08..4ba0f42 100644
+--- a/apparmor/torbrowser.Browser.firefox
++++ b/apparmor/torbrowser.Browser.firefox
+@@ -43,14 +43,15 @@
+   owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/components/*.so mr,
+   owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/browser/components/*.so mr,
+   owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/firefox rix,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/TorBrowser/,}Data/Browser/profiles.ini r,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/TorBrowser/,}Data/Browser/profile.default/ r,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/TorBrowser/,}Data/Browser/profile.default/** rwk,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/TorBrowser/,}Tor/tor Px,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}Desktop/ rw,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}Desktop/** rwk,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}Downloads/ rw,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}Downloads/** rwk,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/TorBrowser/Data/Browser/profiles.ini r,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/TorBrowser/Data/Browser/profile.default/ r,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/TorBrowser/Data/Browser/profile.default/** rwk,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/TorBrowser/Tor/tor Px,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/TorBrowser/Tor/libstdc++.so.6 m,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/Desktop/ rw,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/Desktop/** rwk,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/Downloads/ rw,
++  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/Downloads/** rwk,
+ 
+   /etc/mailcap r,
+   /etc/mime.types r,
+diff --git a/apparmor/torbrowser.start-tor-browser b/apparmor/torbrowser.start-tor-browser
+deleted file mode 100644
+index 3ca6368..0000000
+--- a/apparmor/torbrowser.start-tor-browser
++++ /dev/null
+@@ -1,53 +0,0 @@
+-#include <tunables/global>
+-
+-/home/*/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}start-tor-browser {
+-  #include <abstractions/base>
+-  #include <abstractions/bash>
+-  #include <abstractions/fonts>
+-  #include <abstractions/freedesktop.org>
+-
+-  capability sys_ptrace,
+-
+-
+-  /bin/cat rix,
+-  /bin/bash r,
+-  /bin/dash rix,
+-  /bin/grep rix,
+-  /bin/ln rix,
+-  /bin/mkdir rix,
+-  /bin/ps rix,
+-  /bin/readlink ix,
+-  /bin/sed rix,
+-  /dev/pts/[0-9]* rw,
+-  /dev/tty rw,
+-  /etc/magic r,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/.config/ w,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/.config/ibus/ w,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/.config/ibus/bus w,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/Browser/firefox Px,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/TorBrowser/,}Tor/tor r,
+-  owner @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}start-tor-browser r,
+-  @{PROC}/ r,
+-  @{PROC}/[0-9]*/status r,
+-  @{PROC}/[0-9]*/stat r,
+-  @{PROC}/[0-9]*/cmdline r,
+-  @{PROC}/meminfo r,
+-  @{PROC}/sys/kernel/pid_max r,
+-  @{PROC}/tty/drivers r,
+-  @{PROC}/uptime r,
+-  /{,var/}run/utmp r,
+-  /dev/ptmx rw,
+-  /usr/bin/dirname rix,
+-  /usr/bin/expr rix,
+-  /usr/bin/file rix,
+-  /usr/bin/getconf rix,
+-  /usr/bin/id rix,
+-  /usr/bin/ldd rix,
+-  /usr/bin/realpath ix,
+-  /usr/bin/zenity ix,
+-  /usr/lib{,32,64}/** mr,
+-  /usr/share/file/magic.mgc r,
+-  /usr/share/file/magic/ r,
+-  /usr/share/zenity/zenity.ui r,
+-
+-}
+diff --git a/apparmor/usr.bin.torbrowser-launcher b/apparmor/usr.bin.torbrowser-launcher
+index 424aa5a..3eb61f9 100644
+--- a/apparmor/usr.bin.torbrowser-launcher
++++ b/apparmor/usr.bin.torbrowser-launcher
+@@ -27,7 +27,7 @@
+   @{HOME}/.local/share/torbrowser/ rw,
+   @{HOME}/.local/share/torbrowser/** mrwk,
+   @{HOME}/.local/share/torbrowser/gnupg_homedir/* l,
+-  @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/{Browser/,}start-tor-browser Px,
++  @{HOME}/.local/share/torbrowser/tbb/{i686,x86_64}/tor-browser_*/start-tor-browser.desktop Ux,
+ 
+   @{PROC}/ r,
+   @{PROC}/[0-9]*/{cmdline,mountinfo,stat,status} r,
+diff --git a/setup.py b/setup.py
+index 0e47152..3211ea3 100644
+--- a/setup.py
++++ b/setup.py
+@@ -54,7 +54,6 @@ if distro != 'Ubuntu':
+         # we're not in a virtualenv, so we can probably write to /etc
+         datafiles += [('/etc/apparmor.d/', [
+             'apparmor/torbrowser.Browser.firefox',
+-            'apparmor/torbrowser.start-tor-browser',
+             'apparmor/torbrowser.Tor.tor',
+             'apparmor/usr.bin.torbrowser-launcher'])]
+ 
+-- 
+1.9.1
+
