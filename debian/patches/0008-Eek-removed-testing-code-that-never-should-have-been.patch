@@ -1,0 +1,30 @@
+From 7371fdccc5accf5983035b29a95d7080574d2a7f Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Sun, 8 Nov 2015 16:22:06 -0800
+Subject: [PATCH] Eek, removed testing code that never should have been
+ committed
+
+---
+ torbrowser_launcher/launcher.py | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index fb6d44f..d057410 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -161,12 +161,6 @@ class Launcher:
+ 
+         start = self.common.paths['tbb']['start']
+         if os.path.isfile(start) and os.access(start, os.X_OK):
+-            self.set_gui('task', _("testing verify"),
+-                         ['verify',
+-                          'extract',
+-                          'run'])
+-            return
+-
+             if installed_version == latest_version:
+                 print _('Latest version of TBB is installed, launching')
+                 # current version of tbb is installed, launch it
+-- 
+1.9.1
+

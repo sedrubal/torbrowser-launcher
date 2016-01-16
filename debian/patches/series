@@ -5,3 +5,4 @@
 0005-Set-torbrowser.start-tor-browser-and-usr.bin.torbrow.patch
 0006-Get-stable-version-using-torbrowser-updater-xml.patch
 0007-Stop-using-sha256sums.txt-and-sha256sums.txt.asc-fix.patch
+0008-Eek-removed-testing-code-that-never-should-have-been.patch
