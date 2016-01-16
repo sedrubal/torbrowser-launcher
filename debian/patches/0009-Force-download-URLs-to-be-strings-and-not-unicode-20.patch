@@ -1,0 +1,37 @@
+From 1ff10552d0498d4f0edda6c27ab88a132fb52d57 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Sun, 8 Nov 2015 16:23:30 -0800
+Subject: [PATCH] Force download URLs to be strings and not unicode (#205)
+
+---
+ torbrowser_launcher/launcher.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index d057410..671bee7 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -26,7 +26,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ """
+ 
+-import os, subprocess, time, json, tarfile, hashlib, lzma, threading, re
++import os, subprocess, time, json, tarfile, hashlib, lzma, threading, re, unicodedata
+ from twisted.internet import reactor
+ from twisted.web.client import Agent, RedirectAgent, ResponseDone, ResponseFailed
+ from twisted.web.http_headers import Headers
+@@ -446,8 +446,10 @@ class Launcher:
+         self.current_download_path = path
+         self.current_download_url = url
+ 
+-        # initialize the progress bar
+         mirror_url = url.format(self.common.settings['mirror'])
++        mirror_url = unicodedata.normalize('NFKD', mirror_url).encode('ascii','ignore') # fix for #205
++
++        # initialize the progress bar
+         self.progressbar.set_fraction(0)
+         self.progressbar.set_text(_('Downloading {0}').format(name))
+         self.progressbar.show()
+-- 
+1.9.1
+
