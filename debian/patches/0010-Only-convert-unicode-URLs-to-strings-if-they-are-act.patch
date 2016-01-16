@@ -1,0 +1,29 @@
+From 94d184a26bb77f46e8256c23246fe68fa49552b0 Mon Sep 17 00:00:00 2001
+From: Micah Lee <micah@micahflee.com>
+Date: Sun, 8 Nov 2015 16:27:03 -0800
+Subject: [PATCH] Only convert unicode URLs to strings if they are actually
+ unicode (#205)
+
+---
+ torbrowser_launcher/launcher.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/torbrowser_launcher/launcher.py b/torbrowser_launcher/launcher.py
+index 671bee7..ff4adcd 100644
+--- a/torbrowser_launcher/launcher.py
++++ b/torbrowser_launcher/launcher.py
+@@ -447,7 +447,10 @@ class Launcher:
+         self.current_download_url = url
+ 
+         mirror_url = url.format(self.common.settings['mirror'])
+-        mirror_url = unicodedata.normalize('NFKD', mirror_url).encode('ascii','ignore') # fix for #205
++
++        # convert mirror_url from unicode to string, if needed (#205)
++        if isinstance(mirror_url, unicode):
++            mirror_url = unicodedata.normalize('NFKD', mirror_url).encode('ascii','ignore')
+ 
+         # initialize the progress bar
+         self.progressbar.set_fraction(0)
+-- 
+1.9.1
+
