@@ -1,3 +1,9 @@
+torbrowser-launcher (0.2.2-3) UNRELEASED; urgency=medium
+
+  * Turn the dependency on tor into a Recommends. (Closes: #795240)
+
+ -- Holger Levsen <holger@debian.org>  Tue, 19 Jan 2016 15:00:25 +0100
+
 torbrowser-launcher (0.2.2-2) sid; urgency=medium
 
   * Upload to sid.
