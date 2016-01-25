@@ -3,6 +3,9 @@ torbrowser-launcher (0.2.2-3) UNRELEASED; urgency=medium
   * Turn the dependency on tor into a Recommends. (Closes: #795240)
   * Move to section contrib/web, thanks lintian!
   * Override lintian's pedantic debian-watch-may-check-gpg-signature warning.
+  * Add debian/patches/0003-fix-apparmor-profile-to-support-self-upgrade.patch
+    to do just that. Thanks to intrigeri for providing these rules.
+    (Closes: #808140)
 
  -- Holger Levsen <holger@debian.org>  Tue, 19 Jan 2016 15:00:25 +0100
 
