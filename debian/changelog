@@ -9,6 +9,8 @@ torbrowser-launcher (0.2.2-3) UNRELEASED; urgency=medium
   * Add ca-certificates as recommends. (Closes: #805173)
     (Unless specifically asked to download via tor, tbl will download via
     https and then ca-certificates are needed.)
+  * Update package description, stop mentioning the removed upgrade feature.
+    (Closes: #812664)
 
  -- Holger Levsen <holger@debian.org>  Tue, 19 Jan 2016 15:00:25 +0100
 
