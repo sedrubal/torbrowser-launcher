@@ -9,6 +9,7 @@ torbrowser-launcher (0.2.2-3) UNRELEASED; urgency=medium
   * Add ca-certificates as depends. (Closes: #805173)
   * Update package description, stop mentioning the removed upgrade feature.
     (Closes: #812664)
+  * Add dh-python to build-depends.
 
  -- Holger Levsen <holger@debian.org>  Tue, 19 Jan 2016 15:00:25 +0100
 
