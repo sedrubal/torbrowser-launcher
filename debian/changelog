@@ -6,9 +6,7 @@ torbrowser-launcher (0.2.2-3) UNRELEASED; urgency=medium
   * Add debian/patches/0003-fix-apparmor-profile-to-support-self-upgrade.patch
     to do just that. Thanks to intrigeri for providing these rules.
     (Closes: #808140)
-  * Add ca-certificates as recommends. (Closes: #805173)
-    (Unless specifically asked to download via tor, tbl will download via
-    https and then ca-certificates are needed.)
+  * Add ca-certificates as depends. (Closes: #805173)
   * Update package description, stop mentioning the removed upgrade feature.
     (Closes: #812664)
 
