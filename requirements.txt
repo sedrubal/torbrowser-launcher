@@ -7,7 +7,7 @@ Parsley==1.2
 txsocksx==1.13.0.1
 
 # sha256: vf2WGsIhb1xlsH8sOl5RFvZxO4wc8HbEABDGSBDSaWM
-Twisted==14.0.0
+Twisted==20.3.0
 
 # sha256: kcunt818uC9vTgI_53-U3D30rlKH_VXe8hSNwjLQx9o
 zope.interface==4.1.1
